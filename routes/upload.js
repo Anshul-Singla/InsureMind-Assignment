@@ -15,18 +15,18 @@ router.post("/", upload.single("file"), (req, res) => {
     console.log("🚀 Starting worker for:", filePath , fileType);
 
     const worker = new Worker(path.join(__dirname, "../workers/uploadWorker.js"), {
-        workerData: { filePath , fileType } // ✅ Send filePath directly in workerData
+        workerData: { filePath , fileType } 
     });
 
-    // ✅ Handle Worker Response
+  
     worker.on("message", (message) => {
-        console.log("✅ Worker finished:", message);
+        console.log(" Worker finished:", message);
         res.json({ success: true, message });
     });
 
-    // ❌ Handle Worker Errors (Prevents Crashes)
+   
     worker.on("error", (error) => {
-        console.error("❌ Worker Error:", error);
+        console.error("Worker Error:", error);
         res.status(500).json({ success: false, error: error.message });
     });
 
